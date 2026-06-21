@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora Financiera Pro - Interés Compuesto, Márgenes y Tarifas</title>
+    <meta name="description" content="Planifica tu futuro financiero con nuestra suite gratuita. Calcula el interés compuesto, el margen de ganancias de tus productos y las comisiones para freelancers de forma inmediata.">
+    <meta name="keywords" content="calculadora de interes compuesto, calcular margen de ganancia, calculadora de comisiones freelancers, formulas financieras, planificacion de ahorros">
+    <link rel="canonical" href="https://tudominio.com/">
+
+    <!-- Open Graph para Redes Sociales -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Calculadora Financiera Pro - Suite de Micro-Herramientas Gratuitas">
+    <meta property="og:description" content="Herramientas profesionales e interactivas para emprendedores, ahorradores y freelancers. Optimiza tus ganancias al instante.">
+    <meta property="og:url" content="https://tudominio.com/">
+    <meta property="og:image" content="https://tudominio.com/assets/og-image.jpg">
+
+    <!-- Tailwind CSS para Diseño Moderno -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f8fafc',
+                            100: '#f1f5f9',
+                            600: '#4f46e5', // Indigo corporativo
+                            700: '#4338ca',
+                            emerald: '#059669', // Emerald financiero
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- SCHEMA MARKUP (JSON-LD) - Clave para la aprobación y posicionamiento en Google -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebApplication",
+          "@id": "https://tudominio.com/#webapp",
+          "url": "https://tudominio.com/",
+          "name": "Calculadora Financiera Pro",
+          "applicationCategory": "BusinessApplication",
+          "operatingSystem": "All",
+          "browserRequirements": "Requires JavaScript. Requires HTML5.",
+          "offers": {
+            "@type": "Offer",
+            "price": "0.00",
+            "priceCurrency": "USD"
+          }
+        },
+        {
+          "@type": "FAQPage",
+          "@id": "https://tudominio.com/#faq",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "¿Qué es el interés compuesto y cómo se calcula?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "El interés compuesto es aquel que se suma al capital inicial de forma periódica, de modo que los intereses generados vuelven a producir nuevos intereses. La fórmula matemática estándar es A = P(1 + r)^t, donde A es el monto acumulado, P es el capital inicial, r es la tasa de interés anual y t es el tiempo en años."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "¿Cuál es la diferencia entre margen de ganancia bruto y margen neto?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "El margen bruto mide la rentabilidad de un producto restando únicamente el costo de adquisición o fabricación de su precio de venta. Por otro lado, el margen neto descuenta todos los gastos operativos, impuestos, comisiones de plataformas y costes variables asociados antes de obtener el beneficio real."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "¿Cómo deben calcular los freelancers sus comisiones de cobro?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Para asegurar un ingreso neto específico al cobrar por plataformas digitales, el freelancer debe aplicar una fórmula de despeje de comisiones. Esta fórmula divide el monto neto deseado más los costes fijos de la pasarela entre el porcentaje complementario de la comisión (1 - tarifa porcentual), evitando que la plataforma reduzca sus ingresos reales."
+              }
+            }
+          ]
+        }
+      ]
+    }
+    </script>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans flex flex-col min-h-screen">
+
+    <!-- Cabecera -->
+    <header class="bg-white border-b border-slate-200 py-4 px-6 sticky top-0 z-50">
+      <div class="max-w-6xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
+        <div class="flex items-center gap-3">
+          <div class="bg-indigo-600 text-white p-2 rounded-xl shadow-md">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 11h.01M12 7h.01M15 11h.01M15 7h.01M9 11h.01M11 5h2a2 2 0 012 2v10a2 2 0 01-2 2h-2a2 2 0 01-2-2V7a2 2 0 012-2z"></path></svg>
+          </div>
+          <div>
+            <h1 class="text-xl font-bold text-slate-900 tracking-tight">CalcuFinanzas <span class="text-indigo-600">Pro</span></h1>
+            <p class="text-xs text-slate-500 font-medium">Modelos y Utilidades Matemáticas de Confianza</p>
+          </div>
+        </div>
+        <nav class="flex bg-slate-100 p-1 rounded-xl" aria-label="Selector de Calculadoras">
+          <button onclick="switchTab('tab-interes')" id="btn-tab-interes" class="px-4 py-2 rounded-lg text-sm font-semibold transition-all bg-white text-indigo-600 shadow-sm">Interés Compuesto</button>
+          <button onclick="switchTab('tab-margen')" id="btn-tab-margen" class="px-4 py-2 rounded-lg text-sm font-semibold transition-all text-slate-600 hover:text-slate-900">Márgenes de Venta</button>
+          <button onclick="switchTab('tab-freelance')" id="btn-tab-freelance" class="px-4 py-2 rounded-lg text-sm font-semibold transition-all text-slate-600 hover:text-slate-900">Pasarela Freelancer</button>
+        </nav>
+      </div>
+    </header>
+
+    <!-- CONTENEDOR ANUNCIO SUPERIOR (ESPACIO RESERVADO ADSENSE) -->
+    <div class="max-w-6xl mx-auto w-full px-4 mt-6">
+      <div class="bg-slate-200 border border-slate-300 rounded-xl h-24 flex items-center justify-center text-xs text-slate-500 overflow-hidden" aria-hidden="true">
+        <!-- Espacio reservado para AdSense Banner Superior -->
+        <span>ANUNCIO PUBLICITARIO - ESPACIO DISPONIBLE</span>
+      </div>
+    </div>
+
+    <!-- Contenedor Principal de la Suite -->
+    <main class="flex-grow max-w-6xl mx-auto px-4 py-8 w-full grid grid-cols-1 lg:grid-cols-3 gap-8">
+
+      <!-- COLUMNA IZQUIERDA Y CENTRAL: HERRAMIENTAS INTERACTIVAS (2 Tercios) -->
+      <div class="lg:col-span-2 space-y-8">
+
+        <!-- CALCULADORA 1: INTERÉS COMPUESTO -->
+        <div id="tab-interes" class="tab-content bg-white p-6 sm:p-8 rounded-2xl shadow-sm border border-slate-200">
+          <h2 class="text-2xl font-bold text-slate-900 mb-2">Simulador de Crecimiento Financiero (Interés Compuesto)</h2>
+          <p class="text-slate-500 text-sm mb-6">Proyecta la capitalización de tus ahorros mensuales a lo largo del tiempo bajo tasas de interés constante.</p>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Inputs -->
+            <div class="space-y-4">
+              <div>
+                <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-2">Capital Inicial ($)</label>
+                <input type="number" id="int-capital" value="1000" oninput="calculateCompoundInterest()" class="w-full bg-slate-50 border border-slate-200 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 rounded-xl px-4 py-3 text-sm outline-none transition-all">
+              </div>
+              <div>
+                <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-2">Aporte Mensual Continuo ($)</label>
+                <input type="number" id="int-aporte" value="100" oninput="calculateCompoundInterest()" class="w-full bg-slate-50 border border-slate-200 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 rounded-xl px-4 py-3 text-sm outline-none transition-all">
+              </div>
+              <div>
+                <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-2 flex justify-between">
+                  <span>Tasa de Interés Anual (%)</span>
+                  <span id="label-tasa" class="text-indigo-600 font-extrabold">10%</span>
+                </label>
+                <input type="range" id="int-tasa" min="1" max="30" value="10" step="0.5" oninput="updateTasaLabel(); calculateCompoundInterest();" class="w-full accent-indigo-600 cursor-pointer">
+              </div>
+              <div>
+                <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-2 flex justify-between">
+                  <span>Plazo de Proyección (Años)</span>
+                  <span id="label-anos" class="text-indigo-600 font-extrabold">5 años</span>
+                </label>
+                <input type="range" id="int-anos" min="1" max="40" value="5" step="1" oninput="updateAnosLabel(); calculateCompoundInterest();" class="w-full accent-indigo-600 cursor-pointer">
+              </div>
+            </div>
+
+            <!-- Outputs -->
+            <div class="bg-slate-50 rounded-2xl p-6 border border-slate-200 flex flex-col justify-between">
+              <h3 class="text-sm font-bold text-slate-500 uppercase tracking-wider mb-4">Resumen de Crecimiento</h3>
+              <div class="space-y-4">
+                <div>
+                  <p class="text-xs text-slate-400 font-semibold uppercase">Total Acumulado Final</p>
+                  <p id="res-int-total" class="text-3xl font-extrabold text-slate-900">$0.00</p>
+                </div>
+                <div class="grid grid-cols-2 gap-4 border-t border-slate-200 pt-4">
+                  <div>
+                    <p class="text-xs text-slate-400 font-semibold uppercase">Total Invertido</p>
+                    <p id="res-int-invertido" class="text-lg font-bold text-slate-700">$0.00</p>
+                  </div>
+                  <div>
+                    <p class="text-xs text-slate-400 font-semibold uppercase">Intereses Ganados</p>
+                    <p id="res-int-ganado" class="text-lg font-bold text-emerald-600">$0.00</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CALCULADORA 2: MARGEN DE GANANCIAS -->
+        <div id="tab-margen" class="tab-content hidden bg-white p-6 sm:p-8 rounded-2xl shadow-sm border border-slate-200">
+          <h2 class="text-2xl font-bold text-slate-900 mb-2">Optimizador de Márgenes y Fijación de Precios</h2>
+          <p class="text-slate-500 text-sm mb-6">Determina con precisión científica el precio de venta de tus artículos para salvaguardar el margen neto de tu negocio.</p>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Inputs -->
+            <div class="space-y-4">
+              <div>
+                <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-2">Costo Base del Producto ($)</label>
+                <input type="number" id="mrg-costo" value="50" oninput="calculateMargins()" class="w-full bg-slate-50 border border-slate-200 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 rounded-xl px-4 py-3 text-sm outline-none transition-all">
+              </div>
+              <div>
+                <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-2">Margen Bruto Deseado (%)</label>
+                <input type="number" id="mrg-porcentaje" value="40" oninput="calculateMargins()" class="w-full bg-slate-50 border border-slate-200 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 rounded-xl px-4 py-3 text-sm outline-none transition-all">
+              </div>
+              <div>
+                <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-2">Gastos Operativos o Comisiones Extra ($)</label>
+                <input type="number" id="mrg-gastos" value="2" oninput="calculateMargins()" class="w-full bg-slate-50 border border-slate-200 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 rounded-xl px-4 py-3 text-sm outline-none transition-all">
+              </div>
+            </div>
+
+            <!-- Outputs -->
+            <div class="bg-slate-50 rounded-2xl p-6 border border-slate-200 flex flex-col justify-between">
+              <h3 class="text-sm font-bold text-slate-500 uppercase tracking-wider mb-4">Estructura del Precio</h3>
+              <div class="space-y-4">
+                <div>
+                  <p class="text-xs text-slate-400 font-semibold uppercase">Precio Mínimo de Venta</p>
+                  <p id="res-mrg-precio" class="text-3xl font-extrabold text-slate-900">$0.00</p>
+                </div>
+                <div class="grid grid-cols-2 gap-4 border-t border-slate-200 pt-4">
+                  <div>
+                    <p class="text-xs text-slate-400 font-semibold uppercase">Ganancia Neta</p>
+                    <p id="res-mrg-neta" class="text-lg font-bold text-emerald-600">$0.00</p>
+                  </div>
+                  <div>
+                    <p class="text-xs text-slate-400 font-semibold uppercase font-semibold">Markup Aplicado</p>
+                    <p id="res-mrg-markup" class="text-lg font-bold text-slate-700">0.00%</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CALCULADORA 3: PASARELAS FREELANCER -->
+        <div id="tab-freelance" class="tab-content hidden bg-white p-6 sm:p-8 rounded-2xl shadow-sm border border-slate-200">
+          <h2 class="text-2xl font-bold text-slate-900 mb-2">Calculadora de Descuentos por Transacción (Freelancers)</h2>
+          <p class="text-slate-500 text-sm mb-6">Determina cuánto debes cobrarle a tu cliente internacional para recibir exactamente tu tarifa limpia tras deducciones.</p>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Inputs -->
+            <div class="space-y-4">
+              <div>
+                <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-2">Pago Limpio Deseado (Neto) ($)</label>
+                <input type="number" id="fee-neto" value="500" oninput="calculateFees()" class="w-full bg-slate-50 border border-slate-200 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 rounded-xl px-4 py-3 text-sm outline-none transition-all">
+              </div>
+              <div>
+                <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-2">Porcentaje de la Plataforma (%)</label>
+                <input type="number" id="fee-porcentaje" value="5.4" step="0.1" oninput="calculateFees()" class="w-full bg-slate-50 border border-slate-200 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 rounded-xl px-4 py-3 text-sm outline-none transition-all">
+              </div>
+              <div>
+                <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-2">Tarifa Fija Adicional ($)</label>
+                <input type="number" id="fee-fijo" value="0.30" step="0.05" oninput="calculateFees()" class="w-full bg-slate-50 border border-slate-200 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 rounded-xl px-4 py-3 text-sm outline-none transition-all">
+              </div>
+            </div>
+
+            <!-- Outputs -->
+            <div class="bg-slate-50 rounded-2xl p-6 border border-slate-200 flex flex-col justify-between">
+              <h3 class="text-sm font-bold text-slate-500 uppercase tracking-wider mb-4">Ajuste de Facturación</h3>
+              <div class="space-y-4">
+                <div>
+                  <p class="text-xs text-slate-400 font-semibold uppercase">Monto Bruto a Facturar o Enviar</p>
+                  <p id="res-fee-enviar" class="text-3xl font-extrabold text-indigo-600">$0.00</p>
+                </div>
+                <div class="grid grid-cols-2 gap-4 border-t border-slate-200 pt-4">
+                  <div>
+                    <p class="text-xs text-slate-400 font-semibold uppercase">Comisión Retenida</p>
+                    <p id="res-fee-comision" class="text-lg font-bold text-rose-600">$0.00</p>
+                  </div>
+                  <div>
+                    <p class="text-xs text-slate-400 font-semibold uppercase font-semibold">Costo Real de Comisión</p>
+                    <p id="res-fee-porcentaje-real" class="text-lg font-bold text-slate-700">0.00%</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CONTENEDOR ANUNCIO CENTRAL (ESPACIO RESERVADO ADSENSE) -->
+        <div class="bg-slate-200 border border-slate-300 rounded-xl h-24 flex items-center justify-center text-xs text-slate-500 overflow-hidden" aria-hidden="true">
+          <!-- Espacio reservado para AdSense Feed/Native -->
+          <span>ANUNCIO PUBLICITARIO - RECOMENDADO PARA TU INTERÉS</span>
+        </div>
+
+        <!-- CONTENIDO DETALLADO SEO DE AUTORIDAD (E-E-A-T) -->
+        <div class="bg-white p-6 sm:p-8 rounded-2xl shadow-sm border border-slate-200 prose prose-slate max-w-none">
+
+          <!-- Artículo 1 -->
+          <article id="seo-interes" class="seo-section space-y-6">
+            <h2 class="text-2xl font-bold text-slate-900">¿Qué es el interés compuesto y por qué es el motor del ahorro moderno?</h2>
+            <p class="text-slate-600 leading-relaxed">
+              En el ámbito de las finanzas corporativas y personales, el <strong>interés compuesto</strong> representa el principio matemático mediante el cual los rendimientos financieros devengados por un capital principal se acumulan de forma recurrente al saldo existente. Esto genera un efecto multiplicador exponencial, ya que los nuevos intereses se calculan sobre montos progresivamente superiores.
+            </p>
+
+            <h3 class="text-lg font-semibold text-slate-800">La Base Teórica y Fórmula Matemática</h3>
+            <p class="text-slate-600 leading-relaxed">
+              A diferencia del interés simple, donde el beneficio permanece lineal en relación directa con el capital origen, la capitalización periódica puede modelarse teóricamente. La expresión matemática que rige la adición de flujos constantes es la siguiente:
+            </p>
+            <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 text-center font-mono my-4">
+              $$A = P \left(1 + \frac{r}{n}\right)^{nt} + PMT \left[ \frac{\left(1 + \frac{r}{n}\right)^{nt} - 1}{\frac{r}{n}} \right]$$
+            </div>
+            <p class="text-slate-600 text-sm italic">
+              Donde: $A$ representa el valor acumulado final, $P$ el principal o depósito de arranque, $PMT$ los depósitos o contribuciones periódicas, $r$ la tasa porcentual anual nominal, $n$ la frecuencia de capitalización, y $t$ el intervalo temporal expresado en unidades anuales.
+            </p>
+
+            <h3 class="text-lg font-semibold text-slate-800">Preguntas Frecuentes sobre Interés Compuesto (FAQ)</h3>
+            <div class="space-y-4 border-t pt-4">
+              <div>
+                <h4 class="font-bold text-slate-900">¿Cuál es la frecuencia óptima de capitalización?</h4>
+                <p class="text-slate-600 text-sm">Cuanto más frecuente sea la capitalización (diaria o mensual en lugar de anual), más rápido se acelerará el crecimiento exponencial, ya que los beneficios se reinvierten en periodos de tiempo más reducidos.</p>
+              </div>
+              <div>
+                <h4 class="font-bold text-slate-900">¿Afecta la inflación a la capitalización a largo plazo?</h4>
+                <p class="text-slate-600 text-sm">Sí. Para obtener el crecimiento del capital en términos reales, se debe descontar la inflación anual promedio a la tasa de interés obtenida, arrojando la tasa de retorno real neta.</p>
+              </div>
+            </div>
+          </article>
+
+          <!-- Artículo 2 -->
+          <article id="seo-margen" class="seo-section hidden space-y-6">
+            <h2 class="text-2xl font-bold text-slate-900">Guía de Fijación de Precios: Margen de Utilidad versus Markup</h2>
+            <p class="text-slate-600 leading-relaxed">
+              Uno de los fallos estructurales recurrentes en los nuevos emprendedores digitales reside en la incapacidad técnica de diferenciar el <strong>margen de beneficio bruto</strong> del <strong>markup</strong> aplicable a los costos operativos de adquisición. Esto pone en riesgo la estabilidad del flujo de caja.
+            </p>
+
+            <h3 class="text-lg font-semibold text-slate-800">Definición de Términos Críticos</h3>
+            <ul class="list-disc pl-5 text-slate-600 space-y-2">
+              <li><strong>Margen de Ganancia Bruto:</strong> Representa la proporción del precio final de venta que constituye utilidad neta. Se calcula mediante la ecuación: $$\text{Margen} = \frac{\text{Precio} - \text{Costo}}{\text{Precio}} \times 100$$</li>
+              <li><strong>Markup:</strong> Constituye el porcentaje que se le añade al costo de adquisición para determinar el precio objetivo del mercado. Su ecuación es: $$\text{Markup} = \frac{\text{Precio} - \text{Costo}}{\text{Costo}} \times 100$$</li>
+            </ul>
+
+            <h3 class="text-lg font-semibold text-slate-800">Fórmula de Despeje para Precios de Venta Seguros</h3>
+            <p class="text-slate-600 leading-relaxed">
+              Si deseas asegurar un margen bruto específico de, por ejemplo, el 40%, no debes sumar simplemente el 40% al costo del producto. Debes emplear la ecuación de despeje adecuada:
+            </p>
+            <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 text-center font-mono my-4">
+              $$\text{Precio Objetivo} = \frac{\text{Costo del Artículo} + \text{Costos Fijos}}{1 - \frac{\text{Margen Deseado}}{100}}$$
+            </div>
+
+            <h3 class="text-lg font-semibold text-slate-800">Preguntas Frecuentes sobre Márgenes de Venta (FAQ)</h3>
+            <div class="space-y-4 border-t pt-4">
+              <div>
+                <h4 class="font-bold text-slate-900">¿Por qué un margen bruto del 50% requiere un markup del 100%?</h4>
+                <p class="text-slate-600 text-sm">Si un artículo cuesta $50 y lo vendes a $100, la ganancia es de $50 (el 50% de las ventas totales). Sin embargo, el sobreprecio sobre el costo inicial fue del 100%. Confundir ambos términos suele provocar pérdidas.</p>
+              </div>
+            </div>
+          </article>
+
+          <!-- Artículo 3 -->
+          <article id="seo-freelance" class="seo-section hidden space-y-6">
+            <h2 class="text-2xl font-bold text-slate-900">La Importancia de Calcular las Retenciones por Pasarela de Pago</h2>
+            <p class="text-slate-600 leading-relaxed">
+              Para los profesionales independientes que exportan servicios al mercado global, las comisiones de transacciones internacionales aplicadas por pasarelas financieras digitales (como Stripe, PayPal u otras) suelen erosionar gravemente el beneficio final si no se presupuestan desde la propuesta inicial.
+            </p>
+
+            <h3 class="text-lg font-semibold text-slate-800">Ecuación para el Despeje de Comisiones</h3>
+            <p class="text-slate-600 leading-relaxed">
+              Si deseas un pago neto exacto de $500 y sabes que la pasarela retiene un porcentaje fijo y una tasa base por transacción, cobrar simplemente el neto más ese porcentaje directo es insuficiente, pues la pasarela también descontará de ese suplemento de dinero enviado. La ecuación exacta es:
+            </p>
+            <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 text-center font-mono my-4">
+              $$\text{Monto Bruto a Facturar} = \frac{\text{Tarifa Neta Objetivo} + \text{Tarifa Fija de Pasarela}}{1 - \frac{\text{Porcentaje Comisión}}{100}}$$
+            </div>
+
+            <h3 class="text-lg font-semibold text-slate-800">Consejos para Maximizar tu Tarifa Neta</h3>
+            <ul class="list-disc pl-5 text-slate-600 space-y-1">
+              <li>Negocia transferencias de cobro alternativas de costo fijo si las cantidades facturadas superan los $1,000 USD mensuales.</li>
+              <li>Aplica siempre el cálculo de comisiones antes de firmar cualquier acuerdo de servicios de ejecución libre (*Freelance contract*).</li>
+            </ul>
+          </article>
+
+        </div>
+      </div>
+
+      <!-- COLUMNA DERECHA: BARRA LATERAL (1 Tercio) -->
+      <aside class="space-y-8">
+
+        <!-- BIOGRAFÍA DE AUTOR (FACTOR CLAVE E-E-A-T PARA GOOGLE) -->
+        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+          <h3 class="text-sm font-extrabold text-slate-900 uppercase tracking-wider mb-4">Autor y Asesoría Técnica</h3>
+          <div class="flex items-center gap-4 mb-4">
+            <div class="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center text-indigo-600 font-extrabold text-lg" aria-hidden="true">
+              CF
+            </div>
+            <div>
+              <p class="font-bold text-slate-900 text-sm">Carlos Fernández, MSc</p>
+              <p class="text-xs text-slate-500">Planificador y Consultor de Negocios</p>
+            </div>
+          </div>
+          <p class="text-xs text-slate-500 leading-relaxed">
+            Especialista en modelos de capitalización financiera y análisis de riesgos contables. Todo el contenido y las ecuaciones lógicas de esta suite interactiva son revisados exhaustivamente para asegurar precisión matemática.
+          </p>
+        </div>
+
+        <!-- CONTENEDOR ANUNCIO LATERAL (ESPACIO RESERVADO ADSENSE) -->
+        <div class="bg-slate-200 border border-slate-300 rounded-xl h-64 flex items-center justify-center text-xs text-slate-500 overflow-hidden" aria-hidden="true">
+          <!-- Espacio reservado para AdSense Banner Lateral -->
+          <span>ANUNCIO PUBLICITARIO - ESPACIO LATERAL</span>
+        </div>
+
+        <!-- GLOSARIO TÉCNICO RÁPIDO -->
+        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+          <h3 class="text-sm font-extrabold text-slate-900 uppercase tracking-wider mb-4">Glosario de Términos</h3>
+          <dl class="space-y-4 text-xs">
+            <div>
+              <dt class="font-bold text-slate-800">Interés Nominal Anual (TNA)</dt>
+              <dd class="text-slate-500 mt-1">El porcentaje de ganancia acordado contractualmente sin contemplar la reinversión recurrente de intereses.</dd>
+            </div>
+            <div>
+              <dt class="font-bold text-slate-800">Tasa Equivalente Anual (TEA)</dt>
+              <dd class="text-slate-500 mt-1">El reflejo real del crecimiento de un capital al cabo de un año acumulando los intereses generados cada mes.</dd>
+            </div>
+            <div>
+              <dt class="font-bold text-slate-800">Pasarela de Pago Internacional</dt>
+              <dd class="text-slate-500 mt-1">Sistemas en línea para transacciones comerciales multilaterales sujetas a tasas fijas e impositivas por cobro de divisas.</dd>
+            </div>
+          </dl>
+        </div>
+      </aside>
+    </main>
+
+    <!-- Pie de página con Disclaimer de Confianza Obligatorio -->
+    <footer class="bg-slate-900 text-slate-400 py-12 px-6 border-t border-slate-800 mt-auto">
+      <div class="max-w-6xl mx-auto space-y-6">
+        <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+          <p class="text-sm font-bold text-white">&copy; 2026 CalcuFinanzas Pro. Todos los derechos reservados.</p>
+          <div class="flex gap-4 text-xs text-slate-400">
+            <a href="#" class="hover:underline">Políticas de Privacidad</a>
+            <span>&bull;</span>
+            <a href="#" class="hover:underline">Términos de Servicio</a>
+            <span>&bull;</span>
+            <a href="#" class="hover:underline">Contacto</a>
+          </div>
+        </div>
+        <p class="text-[10px] text-slate-500 leading-relaxed pt-6 border-t border-slate-800">
+          <strong>DESCARGO DE RESPONSABILIDAD:</strong> Las herramientas de cálculo proporcionadas por esta aplicación web estática tienen una finalidad únicamente educativa e ilustrativa de conceptos financieros. Los resultados no constituyen de ningún modo recomendaciones formales de inversión, contabilidad certificada ni asesorías contables o fiscales oficiales. Se recomienda consultar a un profesional financiero calificado antes de tomar decisiones sobre su patrimonio o la contabilidad comercial de su negocio.
+        </p>
+      </div>
+    </footer>
+
+    <!-- LÓGICA DE PROGRAMACIÓN INTERACTIVA (CLIENT-SIDE) -->
+    <script>
+      // Cambio de pestañas fluido
+      function switchTab(tabId) {
+        // Ocultar todas las pestañas de herramientas
+        document.querySelectorAll('.tab-content').forEach(tab => {
+          tab.classList.add('hidden');
+        });
+
+        // Mostrar la seleccionada
+        document.getElementById(tabId).classList.remove('hidden');
+
+        // Ocultar/Mostrar la sección correspondiente del artículo SEO
+        document.querySelectorAll('.seo-section').forEach(section => {
+          section.classList.add('hidden');
+        });
+        const activeSeoId = tabId.replace('tab-', 'seo-');
+        document.getElementById(activeSeoId).classList.remove('hidden');
+
+        // Actualizar estados visuales de los botones de navegación
+        document.querySelectorAll('nav button').forEach(btn => {
+          btn.classList.remove('bg-white', 'text-indigo-600', 'shadow-sm');
+          btn.classList.add('text-slate-600', 'hover:text-slate-900');
+        });
+        const activeBtn = document.getElementById('btn-' + tabId);
+        activeBtn.classList.add('bg-white', 'text-indigo-600', 'shadow-sm');
+        activeBtn.classList.remove('text-slate-600', 'hover:text-slate-900');
+      }
+
+      // Sincronizadores de Texto para Sliders
+      function updateTasaLabel() {
+        const value = document.getElementById('int-tasa').value;
+        document.getElementById('label-tasa').innerText = value + '%';
+      }
+
+      function updateAnosLabel() {
+        const value = document.getElementById('int-anos').value;
+        document.getElementById('label-anos').innerText = value + (value == 1 ? ' año' : ' años');
+      }
+
+      // Formateador de moneda profesional
+      const moneyFormatter = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD'
+      });
+
+      // CALCULADORA 1: LÓGICA DE INTERÉS COMPUESTO
+      function calculateCompoundInterest() {
+        const capital = parseFloat(document.getElementById('int-capital').value) || 0;
+        const aporte = parseFloat(document.getElementById('int-aporte').value) || 0;
+        const tasaAnual = parseFloat(document.getElementById('int-tasa').value) || 0;
+        const anos = parseFloat(document.getElementById('int-anos').value) || 0;
+
+        const meses = anos * 12;
+        const tasaMensual = (tasaAnual / 100) / 12;
+
+        let total = 0;
+        let totalInvertido = capital + (aporte * meses);
+
+        if (tasaMensual === 0) {
+          total = totalInvertido;
+        } else {
+          // Fórmula estándar de interés compuesto con aportaciones sistemáticas mensuales
+          const compoundingCapital = capital * Math.pow(1 + tasaMensual, meses);
+          const compoundingAportes = aporte * ((Math.pow(1 + tasaMensual, meses) - 1) / tasaMensual);
+          total = compoundingCapital + compoundingAportes;
+        }
+
+        const interesesGanados = Math.max(0, total - totalInvertido);
+
+        document.getElementById('res-int-total').innerText = moneyFormatter.format(total);
+        document.getElementById('res-int-invertido').innerText = moneyFormatter.format(totalInvertido);
+        document.getElementById('res-int-ganado').innerText = moneyFormatter.format(interesesGanados);
+      }
+
+      // CALCULADORA 2: LÓGICA DE MARGENES DE GANANCIA
+      function calculateMargins() {
+        const costo = parseFloat(document.getElementById('mrg-costo').value) || 0;
+        const margenPorcentaje = parseFloat(document.getElementById('mrg-porcentaje').value) || 0;
+        const gastos = parseFloat(document.getElementById('mrg-gastos').value) || 0;
+
+        // Validamos para evitar errores de división por cero
+        if (margenPorcentaje >= 100) {
+          document.getElementById('res-mrg-precio').innerText = "N/A";
+          document.getElementById('res-mrg-neta').innerText = "N/A";
+          document.getElementById('res-mrg-markup').innerText = "N/A";
+          return;
+        }
+
+        // Fórmula de precio de venta seguro basado en margen bruto deseado
+        const precioVenta = (costo + gastos) / (1 - (margenPorcentaje / 100));
+        const gananciaNeta = precioVenta - costo - gastos;
+
+        let markup = 0;
+        if (costo > 0) {
+          markup = ((precioVenta - costo) / costo) * 100;
+        }
+
+        document.getElementById('res-mrg-precio').innerText = moneyFormatter.format(precioVenta);
+        document.getElementById('res-mrg-neta').innerText = moneyFormatter.format(gananciaNeta);
+        document.getElementById('res-mrg-markup').innerText = markup.toFixed(2) + "%";
+      }
+
+      // CALCULADORA 3: LÓGICA DE COMISIONES FREELANCERS
+      function calculateFees() {
+        const netoDeseado = parseFloat(document.getElementById('fee-neto').value) || 0;
+        const porcentajeComision = parseFloat(document.getElementById('fee-porcentaje').value) || 0;
+        const cargoFijo = parseFloat(document.getElementById('fee-fijo').value) || 0;
+
+        if (porcentajeComision >= 100) {
+          document.getElementById('res-fee-enviar').innerText = "N/A";
+          document.getElementById('res-fee-comision').innerText = "N/A";
+          document.getElementById('res-fee-porcentaje-real').innerText = "N/A";
+          return;
+        }
+
+        // Fórmula para el reajuste de comisiones retenidas por pasarelas
+        const montoEnviar = (netoDeseado + cargoFijo) / (1 - (porcentajeComision / 100));
+        const comisionRetenida = montoEnviar - netoDeseado;
+
+        let porcentajeReal = 0;
+        if (montoEnviar > 0) {
+          porcentajeReal = (comisionRetenida / montoEnviar) * 100;
+        }
+
+        document.getElementById('res-fee-enviar').innerText = moneyFormatter.format(montoEnviar);
+        document.getElementById('res-fee-comision').innerText = moneyFormatter.format(comisionRetenida);
+        document.getElementById('res-fee-porcentaje-real').innerText = porcentajeReal.toFixed(2) + "%";
+      }
+
+      // Inicialización por defecto en carga del DOM
+      window.onload = function() {
+        calculateCompoundInterest();
+        calculateMargins();
+        calculateFees();
+      };
+    </script>
+</body>
+</html>
