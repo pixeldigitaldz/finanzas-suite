@@ -8,6 +8,9 @@ document.addEventListener('DOMContentLoaded', () => {
     calcInterest();
     calcMargin();
     calcFreelance();
+    
+    // Inicializar Banner de Cookies
+    initCookieBanner();
 });
 
 /**
@@ -164,4 +167,30 @@ function setFee(pct, fix) {
     document.getElementById('fl-fee-pct').value = pct;
     document.getElementById('fl-fee-fix').value = fix;
     calcFreelance();
+}
+
+/**
+ * Lógica del Banner de Cookies
+ */
+function initCookieBanner() {
+    const banner = document.getElementById('cookie-banner');
+    if (!banner) return;
+    
+    // Verificar si ya se aceptaron las cookies
+    if (!localStorage.getItem('cookiesAccepted')) {
+        // Mostrar el banner con un pequeño retraso
+        setTimeout(() => {
+            banner.classList.remove('translate-y-full');
+        }, 1000);
+    }
+}
+
+function acceptCookies() {
+    const banner = document.getElementById('cookie-banner');
+    if (banner) {
+        // Ocultar banner
+        banner.classList.add('translate-y-full');
+        // Guardar preferencia en el navegador
+        localStorage.setItem('cookiesAccepted', 'true');
+    }
 }
