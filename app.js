@@ -36,15 +36,15 @@ function switchTab(tabId) {
     const tabs = document.querySelectorAll('.tab-btn');
     tabs.forEach(tab => {
         // Reset a estado inactivo (blanco con texto gris)
-        tab.classList.remove('bg-accent-500', 'text-white');
-        tab.classList.add('bg-white', 'text-brand-700');
+        tab.classList.remove('bg-accent-500', 'text-white', 'hover:bg-accent-600');
+        tab.classList.add('bg-white', 'text-brand-700', 'hover:bg-brand-100');
     });
 
     // Estado activo para el botón clickeado
     const activeTab = document.getElementById(`tab-${tabId}`);
     if (activeTab) {
-        activeTab.classList.remove('bg-white', 'text-brand-700');
-        activeTab.classList.add('bg-accent-500', 'text-white');
+        activeTab.classList.remove('bg-white', 'text-brand-700', 'hover:bg-brand-100');
+        activeTab.classList.add('bg-accent-500', 'text-white', 'hover:bg-accent-600');
     }
 }
 
