@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
     calcInterest();
     calcMargin();
     calcFreelance();
+    calcDescuentos();
     
     // Inicializar Banner de Cookies
     initCookieBanner();
@@ -193,4 +194,37 @@ function acceptCookies() {
         // Guardar preferencia en el navegador
         localStorage.setItem('cookiesAccepted', 'true');
     }
+}
+
+/**
+ * Calculadora de Descuentos e Impuestos
+ */
+function calcDescuentos() {
+    const originalPrice = parseFloat(document.getElementById('desc-price').value) || 0;
+    const discountPct = parseFloat(document.getElementById('desc-pct').value) || 0;
+    const taxPct = parseFloat(document.getElementById('desc-tax').value) || 0;
+
+    // 1. Calculate discount amount
+    const discountAmount = originalPrice * (discountPct / 100);
+    
+    // 2. Calculate subtotal after discount
+    const subtotal = originalPrice - discountAmount;
+    
+    // 3. Calculate tax amount on the subtotal
+    const taxAmount = subtotal * (taxPct / 100);
+    
+    // 4. Calculate final price
+    const finalPrice = subtotal + taxAmount;
+
+    document.getElementById('desc-final').textContent = formatCurrency(finalPrice);
+    document.getElementById('desc-subtotal').textContent = formatCurrency(subtotal);
+    document.getElementById('desc-saved').textContent = formatCurrency(discountAmount);
+    document.getElementById('desc-tax-amount').textContent = formatCurrency(taxAmount);
+}
+
+/**
+ * Sincroniza un input numérico con un input range (slider)
+ */
+function syncInput(targetId, value) {
+    document.getElementById(targetId).value = value;
 }
